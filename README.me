@@ -1,0 +1,19 @@
+Approaches to requirements:
+  1. To repeatedly enter commands it seemed like a while loop that only ended when exit() was called would work, and it did.
+  2. For running with any arguments, you just needed to check if argc within main was greater than 1 then use fprintf to print to stderr if it was.
+  3. For prompting user commands of arbitrary size, I decided just to utilize getline() 
+      for every command since the true size of the buffer automatically is returned
+      and the size you give as input does not really matter since it just reallocs.
+  4. Parsing easily took the most work, the provided first_unquoted_space() function helped a lot for reading inputs and getting the lengths of individual strings. 
+      I decided to implement my own whitespace() function in order to deal with any leading
+      or large gaps of whitespace that are encountered within the string. In addition, I used unescape()
+      for escape sequences and whatnot (though I still do not know why it leaks memory or how to fix that). 
+      I feel like I use unescape correctly but I decided it was not worth it to try and fix the leaks coming from 
+      using that function since I am confident my code does not leak at all unless I use that function.
+  5. Exiting was mostly straightforward to implement, I just utilized the isdigit() function on each individual character for the argument passed
+      to exit to determine whether argument provided with exit was valid. If valid, then it was just a
+      standard call to exit() with whatever exit code was passed in.
+  6. For dealing with memory leaks, I just followed very safe practice in regards to memory allocation.
+      I made sure to set freed pointers to null when necessary and I only malloced space when I knew it would be used.
+      Also, I made use of valgrind's functionality to debug any memory leaks. I was having issues for a while at the end of doing the project
+      regarding dealing with undefined behavior, but I believe I fixed that when I figured out to add end of string lines to each string when parsing.
